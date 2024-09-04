@@ -1,3 +1,5 @@
+// @ts-nocheck 
+
 /**
  * Checks if a string is a valid hexadecimal string.
  * 
