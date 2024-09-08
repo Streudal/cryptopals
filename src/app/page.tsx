@@ -33,7 +33,7 @@ export default function HomePage() {
               Click here to start the first challenge.
             </div>
           </Link>
-          {/* <Link
+          <Link
             className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
             href="/scores"
             //target="_blank" // Include if you want new pages to open in a new tab
@@ -42,7 +42,7 @@ export default function HomePage() {
             <div className="text-lg">
               Click here to check your score!
             </div>
-          </Link> */}
+          </Link>
         </div>
       </div>
     </main>
