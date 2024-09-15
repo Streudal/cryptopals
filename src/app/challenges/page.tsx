@@ -21,7 +21,7 @@ export default function ChallengesList() {
             </CardHeader>
             <CardFooter>
               <Button asChild className="w-full">
-                <Link href="/">Start</Link>
+                <Link href={`/challenges/${challengeSet.id}`}>Start</Link>
               </Button>
             </CardFooter>
           </Card>))}

@@ -15,7 +15,7 @@ export default function ChallengePage({
   params
 }: ChallengePageProps) {
   return (
-    <div>
+    <div className='grid grid-cols-2'>
       <div className='text-red-500 text-7xl'>
         {params.id === '1' && <Challenge1 />}
         {params.id === '2' && <Challenge2 />}

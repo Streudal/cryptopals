@@ -1,3 +1,4 @@
+import { Header } from '@/components/Header';
 
 type ChallengesLayoutProps = {
   children: React.ReactNode;
@@ -11,11 +12,7 @@ export default function ChallengesLayout({
 }: ChallengesLayoutProps) {
   return (
     <main>
-      <nav>
-        <div>
-          Header Goes Here
-        </div>
-      </nav>
+      <Header />
       {children}
     </main>
   )
