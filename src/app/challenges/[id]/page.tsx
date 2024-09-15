@@ -1,38 +1,26 @@
-import Link from "next/link";
+import Challenge1 from '@/components/challenge-1';
+import { Challenge2 } from '@/components/challenge-2';
 
-export default function Challenge() {
+type ChallengePageProps = {
+  params: {
+    id: string;
+  }
+}
+
+/**
+ * Shared scren for challenges. All code here will be mostly the same for all challenges but need to pass in props/components
+ * so that the details and content of the page are different depending on the challenge (see params in url) the user is on.
+ */
+export default function ChallengePage({
+  params
+}: ChallengePageProps) {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-        <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-          <span className="text-[hsl(280,100%,70%)]">2. Fixed XOR</span> 
-          <h3 className="text-2xl font-semibold tracking-widest"> errr muh gerrrrd</h3>
-
-        </h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-        <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="/challenges"
-            //target="_blank" // Include if you want new pages to open in a new tab
-          >
-            <h3 className="text-2xl font-bold">Back</h3>
-            <div className="text-lg">
-              
-            </div>
-          </Link>
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="/challenges/2/3"
-            //target="_blank" // Include if you want new pages to open in a new tab
-            >
-            <h3 className="text-2xl font-bold">Next</h3>
-            <div className="text-lg">
-              
-            </div>
-          </Link>
-          
-        </div>
+    <div>
+      <div className='text-red-500 text-7xl'>
+        {params.id}
+        {params.id === '1' && <Challenge1 />}
+        {params.id === '2' && <Challenge2 />}
       </div>
-    </main>
+    </div>
   );
 }
