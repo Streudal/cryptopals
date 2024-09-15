@@ -17,7 +17,6 @@ export default function ChallengePage({
   return (
     <div>
       <div className='text-red-500 text-7xl'>
-        {params.id}
         {params.id === '1' && <Challenge1 />}
         {params.id === '2' && <Challenge2 />}
       </div>
