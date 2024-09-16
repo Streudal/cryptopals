@@ -1,5 +1,8 @@
 import Challenge1 from '@/components/challenge-1';
 import { Challenge2 } from '@/components/challenge-2';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { challengeSets } from '@/lib/constants';
+import { notFound } from 'next/navigation';
 
 type ChallengePageProps = {
   params: {
@@ -14,12 +17,32 @@ type ChallengePageProps = {
 export default function ChallengePage({
   params
 }: ChallengePageProps) {
+  const selectedChallengeSet = challengeSets.find((challengeSet) => String(challengeSet.id) === params.id);
+
+  if (!selectedChallengeSet) return notFound();
+
   return (
-    <div className='grid grid-cols-2'>
+    <main>
+      <div>
+        <Select defaultValue='challenge-1'>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select a challenge" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {selectedChallengeSet.challenges.map((challenge) => (
+                <SelectItem key={challenge.id} value={`challenge-${challenge.id}`}>
+                  {challenge.title}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
       <div className='text-red-500 text-7xl'>
         {params.id === '1' && <Challenge1 />}
         {params.id === '2' && <Challenge2 />}
       </div>
-    </div>
+    </main>
   );
 }

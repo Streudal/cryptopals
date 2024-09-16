@@ -11,9 +11,9 @@ export default function ChallengesLayout({
   children,
 }: ChallengesLayoutProps) {
   return (
-    <main>
+    <>
       <Header />
       {children}
-    </main>
+    </>
   )
 }

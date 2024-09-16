@@ -17,8 +17,12 @@ export default function RootLayout({
   children,
 }: RootLayoutProps) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
-      <body>{children}</body>
+    <html lang="en" className={`${GeistSans.variable} dark`}>
+      <body>
+        <div className='p-4'>
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
