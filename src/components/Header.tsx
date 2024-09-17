@@ -9,7 +9,7 @@ export function Header() {
             <img className='w-20 h-20' src='/images/CryptopalsLOGO.svg' />
           </Link>
           <h1 className='font-medium text-3xl'>
-            Cryptopals Cryptopal Challenges
+            Cryptopals Crypto Challenges
           </h1>
         </div>
       </div>
