@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react';
 
-export default function Challenge1() {
+export default function Challenge() {
   const [count, setCount] = useState(0);
   return (
     <div>

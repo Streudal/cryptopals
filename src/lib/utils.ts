@@ -12,7 +12,6 @@ export function saveItem(key: 'cat' | 'dog', value: string) {
   return localStorage.setItem(key, value);
 }
 
-
 /**
  * Get item value from local storage.
  */

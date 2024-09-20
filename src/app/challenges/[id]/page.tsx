@@ -1,4 +1,6 @@
 'use client'
+import Challenge1 from '@/components/challenge-1/Challenge';
+import { Challenge2 } from '@/components/challenge-2';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { challengeSets } from '@/lib/constants';
@@ -10,6 +12,7 @@ type ChallengePageProps = {
 		id: string;
 	}
 }
+
 
 /**
  * Shared scren for challenges. All code here will be mostly the same for all challenges but need to pass in props/components
@@ -50,7 +53,9 @@ export default function ChallengePage({
 			<div className='col-span-7 flex flex-col text-red-500 text-7xl outline-dashed outline-purple-500'>
 				<div className='grid grid-cols-2 grid-rows-2 gap-4 h-full p-2'>
 					<div className='outline outline-yellow-200'>
-						Problem Content
+						{params.id === '1' && <Challenge1 />}
+						{params.id === '2' && <Challenge2 />}
+						{/* {params.id === '3' && <Challenge3 />} */}
 					</div>
 					<div className='outline outline-yellow-200'>
 						Guess Input and submit buttton
