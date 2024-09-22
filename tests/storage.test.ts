@@ -1,11 +1,11 @@
 import { getItem, saveItem } from '@/lib/utils';
-import { beforeEach, describe, expect, jest, test } from '@jest/globals';
+import { describe, expect, test } from 'vitest';
 
 describe('Local Storage Testing', () => {
-  beforeEach(() => {
-    jest.spyOn(Storage.prototype, 'getItem');
-    jest.spyOn(Storage.prototype, 'setItem');
-  });
+  // beforeEach(() => {
+  //   vitest.spyOn(Storage.prototype, 'getItem');
+  //   vitest.spyOn(Storage.prototype, 'setItem');
+  // });
 
   test('Save Item to local storage', () => {
     expect(saveItem('cat', '5'));
