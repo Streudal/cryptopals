@@ -5,24 +5,27 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+
+type StorageKey = 'cat' | 'dog';
+
 /**
  * Save/update item to local storage.
  */
-export function saveItem(key: 'cat' | 'dog', value: string) {
+export function saveItem(key: StorageKey, value: string) {
   return localStorage.setItem(key, value);
 }
 
 /**
  * Get item value from local storage.
  */
-export function getItem(key: string) {
+export function getItem(key: StorageKey) {
   return localStorage.getItem(key);
 }
 
 /**
  * Remove item from local storage.
  */
-export function removeItem(key: string) {
+export function removeItem(key: StorageKey) {
   return localStorage.removeItem(key);
 }
 

@@ -1,6 +1,12 @@
 'use client'
 import Challenge1 from '@/components/challenge-1/Challenge';
-import { Challenge2 } from '@/components/challenge-2';
+import Challenge2 from '@/components/challenge-2/Challenge';
+import Challenge3 from '@/components/challenge-3/Challenge';
+import Challenge4 from '@/components/challenge-4/Challenge';
+import Challenge5 from '@/components/challenge-5/Challenge';
+import Challenge6 from '@/components/challenge-6/Challenge';
+import Challenge7 from '@/components/challenge-7/Challenge';
+import Challenge8 from '@/components/challenge-8/Challenge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { challengeSets } from '@/lib/constants';
@@ -55,7 +61,12 @@ export default function ChallengePage({
 					<div className='outline outline-yellow-200'>
 						{params.id === '1' && <Challenge1 />}
 						{params.id === '2' && <Challenge2 />}
-						{/* {params.id === '3' && <Challenge3 />} */}
+						{params.id === '3' && <Challenge3 />}
+						{params.id === '4' && <Challenge4 />}
+						{params.id === '5' && <Challenge5 />}
+						{params.id === '6' && <Challenge6 />}
+						{params.id === '7' && <Challenge7 />}
+						{params.id === '8' && <Challenge8 />}
 					</div>
 					<div className='outline outline-yellow-200'>
 						Guess Input and submit buttton
