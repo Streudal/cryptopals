@@ -14,7 +14,7 @@ export default function HomePage() {
           // className='text-azure-web bg-midnight-green hover:bg-midnight-green/95 text-xl' variant='outline' 
           asChild
         >
-          <Link href="/challenges">Get Started</Link>
+          <Link href="/sets">Get Started</Link>
         </Button>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
           <Link

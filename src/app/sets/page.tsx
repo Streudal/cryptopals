@@ -1,18 +1,19 @@
+'use client'
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { challengeSets } from '@/lib/constants';
 import { Lock } from "lucide-react";
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-/**
- * Challenge card list page.
- */
-export default function ChallengesList() {
+export default function SetsList() {
+  const pathname = usePathname();
+
   return (
     <div className="flex flex-col gap-10 pt-5">
 
       <h1 className='text-6xl'>
-        Challenge Sets
+        Sets
       </h1>
 
       <div className='grid grid-cols-1 gap-4 justify-items-center place-self-center md:grid-cols-2'>
@@ -30,7 +31,7 @@ export default function ChallengesList() {
               </CardHeader>
               <CardFooter>
                 <Button asChild className="w-full" disabled={isLocked}>
-                  <Link href={`/challenges/${challengeSet.id}`}>
+                  <Link href={`${pathname}/${challengeSet.id}/challenges`}>
                     {isLocked ? 'Locked' : 'Start'}
                   </Link>
                 </Button>

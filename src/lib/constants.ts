@@ -1,7 +1,21 @@
+export type ChallengeSetList = {
+  id: number;
+  title: string;
+  description: string;
+  challenges: ChallegeList[];
+}
+
+export type ChallegeList = {
+  id: number;
+  title: string;
+  description: string;
+  points: number;
+}
+
 /**
  * Challenge set list for challenges list screen and side menu for challenges list within the set.
  */
-export const challengeSets = [
+export const challengeSets: ChallengeSetList[] = [
   {
     id: 1,
     title: "Set 1",
