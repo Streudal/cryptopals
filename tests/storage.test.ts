@@ -1,4 +1,4 @@
-import { getItem, saveItem } from '@/lib/utils';
+import { getItem, saveItem, removeItem, clearItems } from '@/lib/utils';
 import { describe, expect, test } from 'vitest';
 
 describe('Local Storage Testing', () => {
@@ -15,4 +15,11 @@ describe('Local Storage Testing', () => {
     expect(getItem('cat')).toBe('5');
   });
 
+  test('Remove item from local storage', () => {
+    expect(removeItem('cat')).toBe(null);
+  });
+
+  test('Clear all items from local storage', () => {
+    expect(clearItems()).toBe(null);
+  });
 });
