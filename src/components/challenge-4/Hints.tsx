@@ -9,9 +9,9 @@ export default function Hints() {
   return (
     <Alert className='bg-amber-600/30'>
       <InfoIcon className="h-4 w-4" />
-      <AlertTitle>Cryptopals Rule</AlertTitle>
+      <AlertTitle>Hint</AlertTitle>
       <AlertDescription>
-        Always operate on raw bytes, never on encoded strings. Only use hex and base64 for pretty-printing.
+        Your code from #3 should help 😉
       </AlertDescription>
     </Alert>
   );

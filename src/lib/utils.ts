@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 
-type StorageKey = 'cat' | 'dog';
+type StorageKey = string;
 
 /**
  * Save/update item to local storage.
