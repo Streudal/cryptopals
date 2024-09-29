@@ -94,7 +94,7 @@ export default function ChallengePage({
 
   return (
     <main className='grid grid-cols-8 gap-4 pt-4'>
-      <div className='col-span-1 flex flex-col items-center gap-8 border border-white rounded-md p-2'>
+      <div className='col-span-1 flex flex-col items-center gap-8 border border-white rounded-md p-2 h-min'>
         <Select defaultValue={`${selectedChallengeSet.id}`} onValueChange={handleChallengeSetSelection}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select a challenge set" />
@@ -130,7 +130,7 @@ export default function ChallengePage({
           isOutlineOn && 'outline-dashed outline-purple-500'
         )}
       >
-        <div className='grid grid-cols-2 grid-rows-2 gap-4 h-full p-2'>
+        <div className='grid grid-cols-2 gap-4 p-2'>
           <div
             className={cn(
               isOutlineOn && 'outline outline-yellow-200'

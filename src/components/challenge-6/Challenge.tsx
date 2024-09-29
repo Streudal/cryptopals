@@ -13,7 +13,7 @@ export default function Challenge() {
         Break repeating-key XOR
       </h2>
       <div className='flex flex-col gap-2'>
-        <Alert className='bg-amber-600/30'>
+        <Alert variant='destructive'>
           <InfoIcon className="h-4 w-4" />
           <AlertTitle>It is officially on, now.</AlertTitle>
           <AlertDescription>
@@ -23,12 +23,12 @@ export default function Challenge() {
         <p><a className='text-blue-400 hover:cursor-pointer hover:underline' href='/assets/set-1-challenge-data-6.txt' target='_blank'>There's a file here.</a> It's been base64'd after being encrypted with repeating-key XOR.</p>
         <p>Decrypt it.</p>
         <p>Here's how:</p>
-        <ol>
+        <ol className='list-decimal pl-10'>
           <li>
             <p>Let KEYSIZE be the guessed length of the key; try values from 2 to (say) 40.</p>
           </li>
           <li>
-            <p>Write a function to compute the edit distance/Hamming distance between two strings. The Hamming distance is just the number of differing bits. The distance between:</p>
+            <p>Write a function to compute the edit distance/Hamming distance between two strings. <i>The Hamming distance is just the number of differing bits</i>. The distance between:</p>
             <Code
               lines={[
                 'this is a test'
@@ -40,43 +40,30 @@ export default function Challenge() {
                 'wokka wokka!!!'
               ]}
             />
-            <p>is <b>37</b>. Make sure your code agrees before you proceed.</p>
+            <p>is <b>37</b>. <i>Make sure your code agrees before you proceed</i>.</p>
           </li>
           <li>
-
+            For each KEYSIZE, take the <i>first</i> KEYSIZE worth of bytes, and the <i>second</i> KEYSIZE worth of bytes, and find the edit distance between them. Normalize this result by dividing by KEYSIZE.
           </li>
           <li>
-
+            The KEYSIZE with the smallest normalized edit distance is probably the key. You could proceed perhaps with the smallest 2-3 KEYSIZE values. Or take 4 KEYSIZE blocks instead of 2 and average the distances.
           </li>
           <li>
-
+            Now that you probably know the KEYSIZE: break the ciphertext into blocks of KEYSIZE length.
           </li>
           <li>
-
+            Now transpose the blocks: make a block that is the first byte of every block, and a block that is the second byte of every block, and so on.
           </li>
           <li>
-
+            Solve each block as if it was single-character XOR. You already have code to do this.
           </li>
           <li>
-
+            For each block, the single-byte XOR key that produces the best looking histogram is the repeating-key XOR key byte for that block. Put them together and you have the key.
           </li>
         </ol>
-        <Code
-          lines={[
-            `Burning 'em, if you ain't quick and nimble`,
-            'I go crazy when I hear a cymbal'
-          ]}
-        />
-        <p>Encrypt it, under the key "ICE", using repeating-key XOR.</p>
-        <p>In repeating-key XOR, you'll sequentially apply each byte of the key; the first byte of plaintext will be XOR'd against I, the next C, the next E, then I again for the 4th byte, and so on.</p>
-        <p>It should come out to:</p>
-        <Code
-          lines={[
-            '0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272',
-            'a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f'
-          ]}
-        />
-        <p>Encrypt a bunch of stuff using your repeating-key XOR function. Encrypt your mail. Encrypt your password file. Your .sig file. Get a feel for it. I promise, we aren't wasting your time with this.</p>
+        <p>
+          This code is going to turn out to be surprisingly useful later on. Breaking repeating-key XOR ("Vigenere") statistically is obviously an academic exercise, a "Crypto 101" thing. But more people "know how" to break it than can <i>actually break it</i>, and a similar technique breaks something much more important.
+        </p>
       </div>
     </div>
   );

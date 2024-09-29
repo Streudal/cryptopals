@@ -1,35 +1,53 @@
-import Link from "next/link";
+'use client'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { challengeSets } from '@/lib/constants';
+import { usePathname } from 'next/navigation';
 
-export default function ScoresPage() {
+type ChallengeListPageProps = {
+  params: {
+    set_id: string;
+  }
+}
+
+export default function Scores({ params }: ChallengeListPageProps) {
+  const pathname = usePathname();
+  // const challenges = challengeSets.find((set) => set.id === Number(params.set_id))?.challenges;
+
+  // if (!challenges) return notFound();
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-        <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-          <span className="text-[hsl(280,100%,70%)]">Your Score: </span>
-        </h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="/"
-          //target="_blank" // Include if you want new pages to open in a new tab
-          >
-            <h3 className="text-2xl font-bold">Homepage →</h3>
-            <div className="text-lg">
-              Click here to return to the homepage
-            </div>
-          </Link>
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="/scores/2"
-          //target="_blank" // Include if you want new pages to open in a new tab
-          >
-            <h3 className="text-2xl font-bold">Prize →</h3>
-            <div className="text-lg">
-              Click here to claim your prize
-            </div>
-          </Link>
+    <div className="flex flex-col gap-10 pt-5">
+
+      <h1 className='text-6xl'>
+        Scores
+      </h1>
+
+      <div className='flex w-full border border-white rounded-md text-4xl gap-4 p-4'>
+        <h3 className=''>Overall Score:</h3>
+        <div>
+          <span></span>
+          <span></span>
         </div>
       </div>
-    </main>
+      <Accordion type="single" collapsible className='w-full'>
+        {challengeSets.map((set) => (
+          <AccordionItem key={`set-${set.id}`} value={set.title}>
+            <AccordionTrigger className='text-3xl font-bold'>{set.title}</AccordionTrigger>
+            <AccordionContent className='p-8 text-xl'>
+              <ul className='flex flex-col gap-6'>
+                {set.challenges.map((challenge) => (
+                  <li key={`challenge-${challenge.id}`} className='w-full flex justify-between'>
+                    <span>{challenge.title}:</span>
+                    <div>
+                      { } / {challenge.points}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </div>
   );
 }
