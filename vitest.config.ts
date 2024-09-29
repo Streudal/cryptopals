@@ -1,5 +1,4 @@
 /// <reference types="vitest/config" />
-import "@testing-library/jest-dom/vitest";
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 
