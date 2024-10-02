@@ -25,9 +25,9 @@ export default function Scores({ params }: ChallengeListPageProps) {
         <h3>Overall Score</h3>
         <div className='dot-fill'>
           <div className='flex gap-1'>
-            <span></span>
+            <span>0</span>
             <span>/</span>
-            <span></span>
+            <span>8</span>
           </div>
         </div>
       </div>

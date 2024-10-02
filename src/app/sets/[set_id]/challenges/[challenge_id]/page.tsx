@@ -2,6 +2,7 @@
 import Challenge1 from '@/components/challenge-1/Challenge';
 import Hint1 from '@/components/challenge-1/Hints';
 import Solution1 from '@/components/challenge-1/Solution';
+import UserGuess1 from '@/components/challenge-1/UserGuess';
 import Challenge2 from '@/components/challenge-2/Challenge';
 import Hint2 from '@/components/challenge-2/Hints';
 import Solution2 from '@/components/challenge-2/Solution';
@@ -150,7 +151,14 @@ export default function ChallengePage({
               isOutlineOn && 'outline outline-yellow-200'
             )}
           >
-            Guess Input and submit buttton
+            {params.challenge_id === '1' && <UserGuess1 />}
+            {/* {params.challenge_id === '2' && <UserGuess2 />}
+            {params.challenge_id === '3' && <UserGuess3 />}
+            {params.challenge_id === '4' && <UserGuess4 />}
+            {params.challenge_id === '5' && <UserGuess5 />}
+            {params.challenge_id === '6' && <UserGuess6 />}
+            {params.challenge_id === '7' && <UserGuess7 />}
+            {params.challenge_id === '8' && <UserGuess8 />} */}
           </div>
           <div
             className={cn(

@@ -11,11 +11,9 @@ export default function SetsList() {
 
   return (
     <div className="flex flex-col gap-10 pt-5">
-
       <h1 className='text-6xl'>
         Sets
       </h1>
-
       <div className='grid grid-cols-1 gap-4 justify-items-center place-self-center md:grid-cols-2'>
         {challengeSets.map((challengeSet) => {
           const isLocked = challengeSet.id !== 1;
