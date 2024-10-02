@@ -1,29 +1,43 @@
+'use client'
 import { TypescriptCodeHighlighter } from '@/components/TypescriptCodeHighlighter';
+import { Button } from '@/components/ui/button';
+import { getItem, saveItem } from '@/lib/utils';
+import { useState } from 'react';
 
-const set1Challenge1CodeString = require('!!raw-loader!../../../solutions/set-1-challenge-1.ts').default;
+const codeString = require('!!raw-loader!../../../solutions/set-1-challenge-1.ts').default;
+const storageKey = 'Set 1 -- Challenge 1';
 
 export default function Solution() {
+  const savedStorageValues = JSON.parse(getItem(storageKey) as any);
+  const [isSolutionShown, setIsSolutionShown] = useState(savedStorageValues?.solved ?? false);
+
   return (
-    <div>
-      {/* <form
-        className="space-y-8"
-        onSubmit={(e) => {
-          e.preventDefault();
-          const formData = new FormData();
-          const value = (document?.getElementById('guess') as HTMLInputElement)?.value;
-          formData.append('guess', value);
-          checkChallenge1(formData);
+    <div className='flex flex-col gap-8'>
+      {!isSolutionShown && <div className='flex flex-row gap-10 self-center'>
+        <Button onClick={() => {
+          saveItem(storageKey, JSON.stringify({
+            value: 1,
+            solved: true
+          }));
+          setIsSolutionShown(true);
         }}
-      >
-        <div>
-          <label>Your Guess Here</label>
-          <Input id='guess' />
-        </div>
-        <Button type="submit" variant='outline'>Submit</Button>
-      </form> */}
-      <TypescriptCodeHighlighter
-        codeString={set1Challenge1CodeString}
-      />
+        >
+          I solved it! 🎉
+        </Button>
+        <Button onClick={() => {
+          saveItem(storageKey, JSON.stringify({
+            value: 0,
+            solved: false
+          }));
+          setIsSolutionShown(true);
+        }}
+        >
+          I can't figure it out 😭
+        </Button>
+      </div>}
+      {isSolutionShown && <TypescriptCodeHighlighter
+        codeString={codeString}
+      />}
     </div>
   );
 }
