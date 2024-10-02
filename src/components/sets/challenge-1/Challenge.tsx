@@ -1,4 +1,6 @@
-import { Code } from '../Code';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { InfoIcon } from "lucide-react";
+import { Code } from '../../Code';
 
 export default function Challenge() {
   return (
@@ -23,6 +25,13 @@ export default function Challenge() {
           So go ahead and make that happen. You'll need to use this code for the rest of the exercises.
         </p>
       </div>
+      <Alert className='bg-amber-600/30'>
+        <InfoIcon className="h-4 w-4" />
+        <AlertTitle>Cryptopals Rule</AlertTitle>
+        <AlertDescription>
+          Always operate on raw bytes, never on encoded strings. Only use hex and base64 for pretty-printing.
+        </AlertDescription>
+      </Alert>
     </div>
   );
 }

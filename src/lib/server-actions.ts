@@ -1,5 +1,6 @@
 'use server'
 
-export async function runChallenge1() {
-  console.log('Hello from server!');
+export async function checkChallenge1(data: FormData) {
+  console.log(data)
+  console.log('Hello from server!', JSON.stringify(data));
 }

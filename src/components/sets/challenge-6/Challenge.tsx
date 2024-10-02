@@ -1,10 +1,6 @@
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { InfoIcon } from "lucide-react";
-import { Code } from '../Code';
+import { Code } from '../../Code';
 
 export default function Challenge() {
   return (
@@ -65,6 +61,13 @@ export default function Challenge() {
           This code is going to turn out to be surprisingly useful later on. Breaking repeating-key XOR ("Vigenere") statistically is obviously an academic exercise, a "Crypto 101" thing. But more people "know how" to break it than can <i>actually break it</i>, and a similar technique breaks something much more important.
         </p>
       </div>
+      <Alert className='bg-amber-600/30'>
+        <InfoIcon className="h-4 w-4" />
+        <AlertTitle>No, that's not a mistake.</AlertTitle>
+        <AlertDescription>
+          We get more tech support questions for this challenge than any of the other ones. We promise, there aren't any blatant errors in this text. In particular: the "wokka wokka!!!" edit distance really is 37.
+        </AlertDescription>
+      </Alert>
     </div>
   );
 }

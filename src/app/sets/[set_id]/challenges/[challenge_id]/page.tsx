@@ -1,35 +1,27 @@
 'use client'
-import Challenge1 from '@/components/challenge-1/Challenge';
-import Hint1 from '@/components/challenge-1/Hints';
-import Solution1 from '@/components/challenge-1/Solution';
-import UserGuess1 from '@/components/challenge-1/UserGuess';
-import Challenge2 from '@/components/challenge-2/Challenge';
-import Hint2 from '@/components/challenge-2/Hints';
-import Solution2 from '@/components/challenge-2/Solution';
-import Challenge3 from '@/components/challenge-3/Challenge';
-import Hint3 from '@/components/challenge-3/Hints';
-import Solution3 from '@/components/challenge-3/Solution';
-import Challenge4 from '@/components/challenge-4/Challenge';
-import Hint4 from '@/components/challenge-4/Hints';
-import Solution4 from '@/components/challenge-4/Solution';
-import Challenge5 from '@/components/challenge-5/Challenge';
-import Hint5 from '@/components/challenge-5/Hints';
-import Solution5 from '@/components/challenge-5/Solution';
-import Challenge6 from '@/components/challenge-6/Challenge';
-import Hint6 from '@/components/challenge-6/Hints';
-import Solution6 from '@/components/challenge-6/Solution';
-import Challenge7 from '@/components/challenge-7/Challenge';
-import Hint7 from '@/components/challenge-7/Hints';
-import Solution7 from '@/components/challenge-7/Solution';
-import Challenge8 from '@/components/challenge-8/Challenge';
-import Hint8 from '@/components/challenge-8/Hints';
-import Solution8 from '@/components/challenge-8/Solution';
+import Challenge1 from '@/components/sets/challenge-1/Challenge';
+import Solution1 from '@/components/sets/challenge-1/Solution';
+import Challenge2 from '@/components/sets/challenge-2/Challenge';
+import Solution2 from '@/components/sets/challenge-2/Solution';
+import Challenge3 from '@/components/sets/challenge-3/Challenge';
+import Solution3 from '@/components/sets/challenge-3/Solution';
+import Challenge4 from '@/components/sets/challenge-4/Challenge';
+import Solution4 from '@/components/sets/challenge-4/Solution';
+import Challenge5 from '@/components/sets/challenge-5/Challenge';
+import Solution5 from '@/components/sets/challenge-5/Solution';
+import Challenge6 from '@/components/sets/challenge-6/Challenge';
+import Solution6 from '@/components/sets/challenge-6/Solution';
+import Challenge7 from '@/components/sets/challenge-7/Challenge';
+import Solution7 from '@/components/sets/challenge-7/Solution';
+import Challenge8 from '@/components/sets/challenge-8/Challenge';
+import Solution8 from '@/components/sets/challenge-8/Solution';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ChallegeList, challengeSets } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { notFound, useParams, usePathname, useRouter } from 'next/navigation';
+
 
 const isOutlineOn = false;
 
@@ -127,11 +119,11 @@ export default function ChallengePage({
       </div>
       <div
         className={cn(
-          'col-span-7 flex flex-col text-white text-xl ',
+          'col-span-7 max-w-6xl justify-self-center flex flex-col text-white text-xl ',
           isOutlineOn && 'outline-dashed outline-purple-500'
         )}
       >
-        <div className='grid grid-cols-2 gap-4 p-2'>
+        <div className='flex flex-col gap-4 p-2'>
           <div
             className={cn(
               isOutlineOn && 'outline outline-yellow-200'
@@ -145,34 +137,6 @@ export default function ChallengePage({
             {params.challenge_id === '6' && <Challenge6 />}
             {params.challenge_id === '7' && <Challenge7 />}
             {params.challenge_id === '8' && <Challenge8 />}
-          </div>
-          <div
-            className={cn(
-              isOutlineOn && 'outline outline-yellow-200'
-            )}
-          >
-            {params.challenge_id === '1' && <UserGuess1 />}
-            {/* {params.challenge_id === '2' && <UserGuess2 />}
-            {params.challenge_id === '3' && <UserGuess3 />}
-            {params.challenge_id === '4' && <UserGuess4 />}
-            {params.challenge_id === '5' && <UserGuess5 />}
-            {params.challenge_id === '6' && <UserGuess6 />}
-            {params.challenge_id === '7' && <UserGuess7 />}
-            {params.challenge_id === '8' && <UserGuess8 />} */}
-          </div>
-          <div
-            className={cn(
-              isOutlineOn && 'outline outline-yellow-200'
-            )}
-          >
-            {params.challenge_id === '1' && <Hint1 />}
-            {params.challenge_id === '2' && <Hint2 />}
-            {params.challenge_id === '3' && <Hint3 />}
-            {params.challenge_id === '4' && <Hint4 />}
-            {params.challenge_id === '5' && <Hint5 />}
-            {params.challenge_id === '6' && <Hint6 />}
-            {params.challenge_id === '7' && <Hint7 />}
-            {params.challenge_id === '8' && <Hint8 />}
           </div>
           <div
             className={cn(
