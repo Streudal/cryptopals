@@ -1,3 +1,6 @@
+const hexStringInput = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d";
+const base64StringOutput = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
+
 function isHexString(value: string) {
   // Valid hexadecimal characters
   const hexRegex = /^[0-9a-fA-F]+$/;
@@ -6,7 +9,7 @@ function isHexString(value: string) {
   if (value.length % 2 !== 0) {
     return {
       isValid: false,
-      errorMsg: 'Invalid hexadecimal string - length must be even!'
+      errorMsg: "Invalid hexadecimal string - length must be even!"
     }
   }
 
@@ -14,7 +17,7 @@ function isHexString(value: string) {
   if (!hexRegex.test(value)) {
     return {
       isValid: false,
-      errorMsg: 'Invalid hexadecimal string - contains invalid characters!'
+      errorMsg: "Invalid hexadecimal string - contains invalid characters!"
     }
   }
 
@@ -44,11 +47,11 @@ function hexToBase64(hexString: string) {
   const byteArray = hexStringToByteArray(hexString);
 
   if (!byteArray) {
-    throw new Error('Byte Array is null!');
+    throw new Error("Byte Array is null!");
   }
 
   const charCodeArray = byteArrayToCharCodeArray(byteArray);
-  const binaryString = charCodeArray.join('');
+  const binaryString = charCodeArray.join("");
 
   // Encode binary string to base64
   const base64String = btoa(binaryString);
@@ -56,6 +59,5 @@ function hexToBase64(hexString: string) {
   return base64String;
 }
 
-const hexStringInput = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d";
-
-hexToBase64(hexStringInput); // Should output the base64 string: SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t
+const base64String = hexToBase64(hexStringInput);
+console.log(base64StringOutput === base64String); // true

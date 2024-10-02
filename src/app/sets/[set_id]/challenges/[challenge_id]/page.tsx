@@ -78,6 +78,7 @@ export default function ChallengePage({
   const prevUrl = `/sets/${pathParams.set_id}/challenges/${Number(pathParams.challenge_id) - 1}`;
   const isNextDisabled = pathParams.challenge_id === String(maxValue);
   const nextUrl = `/sets/${pathParams.set_id}/challenges/${Number(pathParams.challenge_id) + 1}`;
+  const areChallengesAvailable = !!setChallenges && setChallenges.length > 0;
 
   const handleChallengeSetSelection = (setId: string) => {
     router.push(`/sets/${setId}/challenges/1`);
@@ -102,8 +103,8 @@ export default function ChallengePage({
             </SelectGroup>
           </SelectContent>
         </Select>
-        <div className='w-full flex flex-col gap-2'>
-          {setChallenges?.map((challenge) => (
+        <div className='w-full flex flex-col gap-2 min-h-96'>
+          {areChallengesAvailable ? setChallenges?.map((challenge) => (
             <Link
               key={challenge.id}
               className={cn(
@@ -114,7 +115,7 @@ export default function ChallengePage({
             >
               {challenge.title}
             </Link>
-          ))}
+          )) : <p className='text-center'>No challenges available.</p>}
         </div>
       </div>
       <div
@@ -123,7 +124,7 @@ export default function ChallengePage({
           isOutlineOn && 'outline-dashed outline-purple-500'
         )}
       >
-        <div className='flex flex-col gap-4 p-2'>
+        {areChallengesAvailable && <div className='flex flex-col gap-4 p-2'>
           <div
             className={cn(
               isOutlineOn && 'outline outline-yellow-200'
@@ -152,8 +153,12 @@ export default function ChallengePage({
             {params.challenge_id === '7' && <Solution7 />}
             {params.challenge_id === '8' && <Solution8 />}
           </div>
-        </div>
-        <div className='flex justify-between p-4'>
+        </div>}
+        {!areChallengesAvailable && <div className='flex flex-col gap-4 p-2 items-center'>
+          <h2 className='text-3xl font-bold'>Coming Soon</h2>
+          <p>These challenges are not yet available. Please come back and check again soon!</p>
+        </div>}
+        {areChallengesAvailable && <div className='flex justify-between p-4'>
           <Button disabled={isPreviousDisabled} asChild>
             <Link href={prevUrl}>
               Previous
@@ -164,7 +169,7 @@ export default function ChallengePage({
               Next
             </Link>
           </Button>
-        </div>
+        </div>}
       </div>
     </main>
   );
