@@ -1,4 +1,7 @@
 import { expect, test } from 'vitest';
+import fs from 'fs';
+import path from 'path';
+import {detectSingleCharXOR, isValidHex, decryptAES128ECB} from '../src/lib/utils';
 
 // Challenge 1: Convert hex to base64
 test('Challenge 1: Convert hex to base64', () => {
@@ -22,10 +25,39 @@ test('Challenge 3: Single-byte XOR cipher', () => {
 });
 
 // Challenge 4: Detect AES in ECB mode
-test('Challenge 4: Detect AES in ECB mode', () => {
-  const result = '';
-  expect(result).toBeUndefined;
+test('Challenge 4: Detect single-character XOR', () => {
+  // Read the file
+  const filePath = path.join(__dirname, '../public/assets/set-1-challenge-data-4.txt');
+  const fileContent = fs.readFileSync(filePath, 'utf-8');
+  const hexStrings = fileContent.split('\n').filter(line => line.trim() !== '');
+
+  // Validate each line
+  hexStrings.forEach((line, index) => {
+    const lineNumber = Number(index + 1);
+    
+    if (line.length !== 60) {
+      throw new Error(`Line ${lineNumber.toString()} should be 60 characters long`);
+    }
+    expect(line.length).toBe(60);
+    
+    if (!isValidHex(line)) {
+      throw new Error(`Line ${lineNumber.toString()} should contain only valid hexadecimal characters`);
+    }
+    expect(isValidHex(line)).toBe(true);
+  });
+
+  const result = detectSingleCharXOR(hexStrings);
+  
+  expect(result).toBeDefined();
+  expect(result?.line).toBe("7b5a4215415d544115415d5015455447414c155c46155f4058455c5b523f");
+  expect(result?.key).toBe(53); // ASCII value for '5'
+  expect(result?.plaintext).toBe("Now that the party is jumping\n");
+
+  // Additional validation
+  const decrypted = Buffer.from(result!.line, 'hex').map(byte => byte ^ result!.key);
+  expect(Buffer.from(decrypted).toString('ascii')).toBe(result?.plaintext);
 });
+
 
 // Challenge 5: Implement repeating-key XOR
 test('Challenge 5: Repeating-key XOR', () => {
@@ -50,6 +82,42 @@ test('Challenge 7: Detect AES in ECB mode (file test)', () => {
 
 // Challenge 8: AES-128 ECB Mode Decryption
 test('Challenge 8: AES-128 ECB Mode Decryption', () => {
-  const result = "";
-  expect(result).toBeUndefined;
+  // Read the encrypted file
+  const filePath = path.join(__dirname, '../public/assets/set-1-challenge-data-8.txt');
+  const fileContent = fs.readFileSync(filePath, 'utf-8');
+  const encryptedLines = fileContent.split('\n').filter(line => line.trim() !== '');
+
+
+  // Define the key (usually provided in the challenge)
+  const key = 'YELLOW SUBMARINE';
+
+  // Decrypt each line and check for valid output
+  encryptedLines.forEach((line, index) => {
+    const decrypted = decryptAES128ECB(line, key);
+    
+    // Check if the decrypted text is valid ASCII
+    expect(decrypted).toMatch(/^[\x20-\x7E\n]*$/);
+
+    // Check if the decrypted text contains common English words
+    expect(decrypted).toMatch(/\b(the|be|to|of|and|in|that|have|it|for|not|on|with)\b/i);
+
+    // Check if the decrypted text has a reasonable length
+    expect(decrypted.length).toBeGreaterThan(0);
+    expect(decrypted.length).toBeLessThan(line.length);
+  });
+
+  // Check if at least one line was successfully decrypted
+  const successfullyDecrypted = encryptedLines.some(line => {
+    try {
+      const decrypted = decryptAES128ECB(line, key);
+      const regex = /\b(the|be|to|of|and|in|that|have|it|for|not|on|with)\b/i;
+      return regex.test(decrypted);
+    } catch (error) {
+      console.error(`Decryption failed for line: ${line}`);
+      console.error(error);
+      return false;
+    }
+  });
+
+  expect(successfullyDecrypted).toBe(true);
 });
