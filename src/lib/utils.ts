@@ -66,27 +66,27 @@ export function detectSingleCharXOR(hexStrings: string[]): { plaintext: string; 
   return bestResult;
 }
 
-export function decryptAES128ECB(encryptedHex: string, key: string): string {
-  // Convert the hex string to a buffer
-  const encryptedBuffer = Buffer.from(encryptedHex, 'hex');
+export function decryptAES128ECB(ciphertext: string, key: string): string {
+  try {
+    // Convert the key to a buffer of correct length
+    const keyBuffer = Buffer.from(key, 'utf8');
+    
+    // Create decipher with ECB mode
+    const decipher = crypto.createDecipheriv('aes-128-ecb', keyBuffer, null);
+    decipher.setAutoPadding(true);
 
-  // Create a decipher using AES-128-ECB
-  const decipher = crypto.createDecipheriv('aes-128-ecb', key, null);
+    // Join lines and remove whitespace
+    const cleanCiphertext = ciphertext.replace(/\s+/g, '');
+    
+    // Decrypt the data
+    let decrypted = decipher.update(Buffer.from(cleanCiphertext, 'hex'));
+    decrypted = Buffer.concat([decrypted, decipher.final()]);
 
-  // Disable automatic padding
-  decipher.setAutoPadding(false);
-
-  // Decrypt the buffer
-  let decrypted = decipher.update(encryptedBuffer);
-  decrypted = Buffer.concat([decrypted, decipher.final()]);
-
-  // Remove PKCS#7 padding
-  const paddingLength = decrypted[decrypted.length - 1];
-  if (paddingLength === undefined || paddingLength > 16) {
-    throw new Error('Invalid padding');
+    return decrypted.toString('utf8');
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Decryption error:', error.message);
+    }
+    throw error;
   }
-  const unpaddedDecrypted = decrypted.slice(0, decrypted.length - paddingLength);
-
-  // Convert the decrypted buffer to a string
-  return unpaddedDecrypted.toString('utf8');
 }
