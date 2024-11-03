@@ -3,7 +3,7 @@ const fileContents = `
 PASTE FILE CONTENTS HERE
 `;
 
-function findEncryptedString(fileContent: string) {
+export function findEncryptedString(fileContent: string) {
   const lines = fileContent.split("\n");
   let bestScore = 0;
   let bestLine = "";
@@ -30,7 +30,7 @@ function findEncryptedString(fileContent: string) {
   }
 }
 
-const solution = findEncryptedString(fileContents);
+export const solution = findEncryptedString(fileContents);
 console.log(`Character Key: ${solution.key}`);
 console.log(`Character: ${solution.character}`);
 console.log(`Line: ${solution.line}`);

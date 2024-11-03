@@ -3,7 +3,7 @@ PASTE FILE CONTENTS HERE
 `;
 
 // Function to calculate the Hamming distance (bitwise difference)
-function hammingDistance(str1: string, str2: string) {
+export function hammingDistance(str1: string, str2: string) {
   if (str1.length !== str2.length) throw new Error("Strings must be of equal length");
 
   let distance = 0;
@@ -17,7 +17,7 @@ function hammingDistance(str1: string, str2: string) {
 }
 
 // Function to compute the normalized Hamming distance
-function normalizedHammingDistance(ciphertext: Uint8Array, keysize: number) {
+export function normalizedHammingDistance(ciphertext: Uint8Array, keysize: number) {
   let chunks = [];
 
   for (let i = 0; i < 4; i++) {
@@ -42,7 +42,7 @@ function normalizedHammingDistance(ciphertext: Uint8Array, keysize: number) {
 }
 
 // Function to find the best keysize based on normalized Hamming distance
-function findKeySize(ciphertext: Uint8Array) {
+export function findKeySize(ciphertext: Uint8Array) {
   let smallestDistance = Number.MAX_VALUE;
   let likelyKeySize = 2;
 
@@ -59,7 +59,7 @@ function findKeySize(ciphertext: Uint8Array) {
 }
 
 // Function to transpose blocks based on the keysize
-function transposeBlocks(ciphertext: Uint8Array, keysize: number) {
+export function transposeBlocks(ciphertext: Uint8Array, keysize: number) {
   let blocks: Uint8Array[] = [];
 
   for (let i = 0; i < keysize; i++) {
@@ -76,7 +76,7 @@ function transposeBlocks(ciphertext: Uint8Array, keysize: number) {
 }
 
 // Function to score text based on frequency analysis
-function scoreEnglishText(text: string) {
+export function scoreEnglishText(text: string) {
   const frequency = {
     "a": 0.0651738, "b": 0.0124248, "c": 0.0217339, "d": 0.0349835, "e": 0.1041442,
     "f": 0.0197881, "g": 0.0158610, "h": 0.0492888, "i": 0.0558094, "j": 0.0009033,
@@ -94,7 +94,7 @@ function scoreEnglishText(text: string) {
 }
 
 // Function to decrypt single-byte XOR for each block
-function singleByteXorDecrypt(block: Uint8Array) {
+export function singleByteXorDecrypt(block: Uint8Array) {
   let bestKey = 0;
   let bestScore = -Infinity;
 
@@ -117,7 +117,7 @@ function singleByteXorDecrypt(block: Uint8Array) {
 }
 
 // Convert Base64 to byte array
-function base64ToByteArray(base64: string) {
+export function base64ToByteArray(base64: string) {
   const binaryString = atob(base64);
   const byteArray = new Uint8Array(binaryString.length);
 
@@ -129,7 +129,7 @@ function base64ToByteArray(base64: string) {
 }
 
 // Function to decrypt the entire ciphertext using the discovered key
-function decrypt(ciphertext: Uint8Array, key: Uint8Array) {
+export function decrypt(ciphertext: Uint8Array, key: Uint8Array) {
   let decryptedPlaintext = "";
 
   for (let i = 0; i < ciphertext.length; i++) {
@@ -140,10 +140,10 @@ function decrypt(ciphertext: Uint8Array, key: Uint8Array) {
 }
 
 // Full decryption process
-const ciphertext = base64ToByteArray(base64EncodedCiphertext);
-const keysize = findKeySize(ciphertext);
-const transposedBlocks = transposeBlocks(ciphertext, keysize);
-const key = transposedBlocks.map((block) => singleByteXorDecrypt(block));
-const decryptedMessage = decrypt(ciphertext, new Uint8Array(key));
+export const ciphertext = base64ToByteArray(base64EncodedCiphertext);
+export const keysize = findKeySize(ciphertext);
+export const transposedBlocks = transposeBlocks(ciphertext, keysize);
+export const key = transposedBlocks.map((block) => singleByteXorDecrypt(block));
+export const decryptedMessage = decrypt(ciphertext, new Uint8Array(key));
 
 console.log(decryptedMessage); // Vanilla Ice - Play That Funky Music Lyrics

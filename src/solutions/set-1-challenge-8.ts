@@ -3,7 +3,7 @@ PASTE FILE CONTENTS HERE
 `;
 
 // Function to detect ECB encrypted ciphertext by checking for repeated 16-byte blocks
-function detectECBEncryptedCiphertexts(ciphertexts: string[]): number {
+export function detectECBEncryptedCiphertexts(ciphertexts: string[]): number {
   for (let i = 0; i < ciphertexts.length; i++) {
     const hex = ciphertexts[i]!;
     const blocks = new Set();
@@ -24,8 +24,8 @@ function detectECBEncryptedCiphertexts(ciphertexts: string[]): number {
   return -1; // If no ECB encrypted ciphertext is found
 }
 
-const hexCiphertexts = hexCipherText.split("\n"); // convert each line of the given ciphertext to an array so we can identify the index
-const ecbCiphertextIndex = detectECBEncryptedCiphertexts(hexCiphertexts);
+export const hexCiphertexts = hexCipherText.split("\n"); // convert each line of the given ciphertext to an array so we can identify the index
+export const ecbCiphertextIndex = detectECBEncryptedCiphertexts(hexCiphertexts);
 
 if (ecbCiphertextIndex >= 0) {
   console.log(`ECB-encrypted ciphertext detected at:`);

@@ -1,7 +1,7 @@
-const hexStringInput = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736";
+export const hexStringInput = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736";
 
 // Scoring function to estimate how likely text is English
-function scoreEnglishText(text: string) {
+export function scoreEnglishText(text: string) {
   const frequency = {
     "a": 0.0651738, "b": 0.0124248, "c": 0.0217339, "d": 0.0349835, "e": 0.1041442,
     "f": 0.0197881, "g": 0.0158610, "h": 0.0492888, "i": 0.0558094, "j": 0.0009033,
@@ -18,7 +18,7 @@ function scoreEnglishText(text: string) {
   return score;
 }
 
-function hexToBytes(hex: string): number[] {
+export function hexToBytes(hex: string): number[] {
   const bytes: number[] = [];
 
   for (let i = 0; i < hex.length; i += 2) {
@@ -28,11 +28,11 @@ function hexToBytes(hex: string): number[] {
   return bytes;
 }
 
-function xorBytesWithKey(bytes: number[], characterCodeKey: number) {
+export function xorBytesWithKey(bytes: number[], characterCodeKey: number) {
   return bytes.map(byte => byte ^ characterCodeKey);
 }
 
-function decryptXorCipher(hex: string) {
+export function decryptXorCipher(hex: string) {
   let bestScore = 0;
   let bestPlaintext = "";
   let bestKey = 0;
@@ -59,7 +59,7 @@ function decryptXorCipher(hex: string) {
   }
 }
 
-const decryptedXorCipher = decryptXorCipher(hexStringInput);
+export const decryptedXorCipher = decryptXorCipher(hexStringInput);
 console.log(`Key: ${decryptedXorCipher.key}`); // Key: X
 console.log(`Character: ${decryptedXorCipher.character}`); // Character: X
 console.log(`English Plaintext: ${decryptedXorCipher.plaintext}`); // English Plaintext: "Cooking MC's like a pound of bacon"

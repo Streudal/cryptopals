@@ -3,13 +3,13 @@ import * as crypto from "crypto"; // Use node crypto library
 const encryptedBase64Content = `
 PASTE FILE CONTENTS HERE
 `;
-const decryptionKey = "YELLOW SUBMARINE";
+export const decryptionKey = "YELLOW SUBMARINE";
 
 /**
  * Create a decipher object with AES-128-ECB algorithm and the given key
  * Disable auto padding (since AES-128-ECB does not use padding by default)
  */
-function decryptAES128ECB(encryptedText: string, key: string): string {
+export function decryptAES128ECB(encryptedText: string, key: string): string {
   const decipher = crypto.createDecipheriv("aes-128-ecb", Buffer.from(key, "utf-8"), null);
   decipher.setAutoPadding(true);
 
@@ -19,5 +19,5 @@ function decryptAES128ECB(encryptedText: string, key: string): string {
   return decrypted;
 }
 
-const decryptedMessage = decryptAES128ECB(encryptedBase64Content, decryptionKey);
+export const decryptedMessage = decryptAES128ECB(encryptedBase64Content, decryptionKey);
 console.log(decryptedMessage); // Vanilla Ice - Play That Funky Music Lyrics (again)
