@@ -12,7 +12,7 @@ function findEncryptedString(fileContent: string) {
 
   for (const line of lines) {
     if (line.length === 60) {
-      const { key, plaintext, score } = decryptXorCipher(line); // from previous challenge solution (Set 1 Challenge 3)
+      const { key, plaintext, score } = decryptXorCipher(line);// from previous challenge solution (Set 1 Challenge 3)
       if (score > bestScore) {
         bestScore = score;
         bestLine = line;
