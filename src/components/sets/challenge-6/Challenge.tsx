@@ -13,7 +13,7 @@ export default function Challenge() {
           <InfoIcon className="h-4 w-4" />
           <AlertTitle>It is officially on, now.</AlertTitle>
           <AlertDescription>
-            This challenge isn't conceptually hard, but it involves actual error-prone coding. The other challenges in this set are there to bring you up to speed. This one is there to <b>qualify</b> you. If you can do this one, you're probably just fine up to Set 6.
+            This challenge isnt conceptually hard, but it involves actual error-prone coding. The other challenges in this set are there to bring you up to speed. This one is there to <b>qualify</b> you. If you can do this one, you're probably just fine up to Set 6.
           </AlertDescription>
         </Alert>
         <p><a className='text-blue-400 hover:cursor-pointer hover:underline' href='/assets/set-1-challenge-data-6.txt' target='_blank'>There's a file here.</a> It's been base64'd after being encrypted with repeating-key XOR.</p>
