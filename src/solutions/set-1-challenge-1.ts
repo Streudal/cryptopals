@@ -5,6 +5,14 @@ export function isHexString(value: string) {
   // Valid hexadecimal characters
   const hexRegex = /^[0-9a-fA-F]+$/;
 
+  // Check if the string is empty
+  if (value.length === 0) {
+    return {
+      isValid: false,
+      errorMsg: "Invalid hexadecimal string - length must not be empty!"
+    }
+  }
+
   // Check if the string has an even length
   if (value.length % 2 !== 0) {
     return {

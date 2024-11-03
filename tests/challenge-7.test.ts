@@ -1,6 +1,6 @@
 import { describe, test } from 'vitest';
 
-describe('Set 1 - Challenge 5: Implement repeating-key XOR', () => {
+describe('Set 1 - Challenge 7: Detect AES in ECB mode', () => {
   test('Independent Path Coverage', () => {
 
   });
