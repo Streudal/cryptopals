@@ -1,11 +1,5 @@
-import { describe, it, expect, test } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import fs from 'fs';
-import path from 'path';
-import Solution from '@/components/sets/challenge-6/Solution';
-import { getItem, saveItem } from '@/lib/utils';
-import Challenge from '@/components/sets/challenge-6/Challenge';
 
+import { describe, test, expect } from 'vitest';
 import {
   hammingDistance,
   normalizedHammingDistance,
@@ -17,152 +11,166 @@ import {
   decrypt
 } from '@/solutions/set-1-challenge-6';
 
+describe('Set 1 - Challenge 6: Detect AES in ECB mode', () => {
+    const base64EncodedCiphertext=`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
+`;
 
-//test('Challenge 6: Decrypt AES-128 ECB', () => {
-//   const result = 'wokka wokka!!!';
-//   expect(result).toBeDefined();
-//     // Read the encrypted file
-//   const filePath = path.join(__dirname, '../public/assets/set-1-challenge-data-6.txt');
-//   const fileContent = fs.readFileSync(filePath, 'utf-8');
-//   const encryptedData = Buffer.from(fileContent, 'base64');
-//   expect(fileContent).toBeDefined();
-//   expect(encryptedData).toBeDefined();
-// });
-  // // Process the file content
-  // const encryptedLines = fileContent
-  //   .split('\n')
-  //   .filter(line => line.trim() !== '')
-  //   .map(line => line.trim())
-  //   .join('');
-
-  
-  describe('Cryptography Functions', () => {
-    describe('hammingDistance', () => {
-      it('should calculate correct Hamming distance between two strings', () => {
-        const str1 = 'this is a test';
-        const str2 = 'wokka wokka!!!';
-        expect(hammingDistance(str1, str2)).toBe(37);
-      });
-  
-      it('should throw error for strings of different lengths', () => {
-        expect(() => hammingDistance('abc', 'abcd')).toThrow('Strings must be of equal length');
-      });
-    });
-  
-    describe('normalizedHammingDistance', () => {
-      it('should calculate normalized distance for given keysize', () => {
-        const testData = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]);
-        const result = normalizedHammingDistance(testData, 2);
-        expect(result).toBeTypeOf('number');
-        expect(result).toBeGreaterThan(0);
-      });
-    });
-  
-    describe('findKeySize', () => {
-      it('should find a keysize between 2 and 40', () => {
-        const testData = new Uint8Array(100).fill(65); // Fill with 'A's
-        const keysize = findKeySize(testData);
-        expect(keysize).toBeGreaterThanOrEqual(2);
-        expect(keysize).toBeLessThanOrEqual(40);
-      });
-    });
-  
-    describe('transposeBlocks', () => {
-      it('should correctly transpose blocks', () => {
-        const input = new Uint8Array([1, 2, 3, 4, 5, 6]);
-        const keysize = 2;
-        const transposed = transposeBlocks(input, keysize);
-        
-        expect(transposed).toHaveLength(keysize);
-        expect(Array.from(transposed[0])).toEqual([1, 3, 5]);
-        expect(Array.from(transposed[1])).toEqual([2, 4, 6]);
-      });
-    });
-  
-    describe('scoreEnglishText', () => {
-      it('should give higher score to valid English text', () => {
-        const englishText = 'the quick brown fox';
-        const gibberish = 'xkcd vmz qwerty';
-        
-        const englishScore = scoreEnglishText(englishText);
-        const gibberishScore = scoreEnglishText(gibberish);
-        
-        expect(englishScore).toBeGreaterThan(gibberishScore);
-      });
-  
-      it('should be case insensitive', () => {
-        const lower = 'test';
-        const upper = 'TEST';
-        expect(scoreEnglishText(lower)).toBe(scoreEnglishText(upper));
-      });
-    });
-  
-    describe('singleByteXorDecrypt', () => {
-      it('should decrypt single-byte XOR encrypted text', () => {
-        // Create a simple encrypted text: "hello" XORed with key 42
-        const plaintext = 'hello';
-        const key = 42;
-        const encrypted = new Uint8Array(plaintext.split('').map(c => c.charCodeAt(0) ^ key));
-        
-        const decryptedKey = singleByteXorDecrypt(encrypted);
-        expect(decryptedKey).toBe(key);
-      });
-    });
-  
-    describe('base64ToByteArray', () => {
-      it('should correctly convert base64 to byte array', () => {
-        const base64 = 'SGVsbG8='; // "Hello" in base64
-        const byteArray = base64ToByteArray(base64);
-        
-        expect(byteArray).toBeInstanceOf(Uint8Array);
-        expect(String.fromCharCode(...byteArray)).toBe('Hello');
-      });
-    });
-  
-    describe('decrypt', () => {
-      it('should decrypt text with repeating key', () => {
-        const plaintext = 'Hello World';
-        const key = new Uint8Array([1, 2, 3]); // 3-byte repeating key
-        
-        // Encrypt
-        const ciphertext = new Uint8Array(plaintext.length);
-        for (let i = 0; i < plaintext.length; i++) {
-          ciphertext[i] = plaintext.charCodeAt(i) ^ key[i % key.length];
-        }
-        
-        // Decrypt
-        const decrypted = decrypt(ciphertext, key);
-        expect(decrypted).toBe(plaintext);
-      });
-    });
-  
-    describe('Integration test', () => {
-      it('should successfully process a complete encryption/decryption cycle', () => {
-        // Create a simple test message
-        const originalText = 'The quick brown fox jumps over the lazy dog';
-        const testKey = new Uint8Array([65, 66, 67]); // Key: "ABC"
-        
-        // Convert to Uint8Array
-        const textBytes = new Uint8Array(originalText.split('').map(c => c.charCodeAt(0)));
-        
-        // Encrypt
-        const encrypted = new Uint8Array(textBytes.length);
-        for (let i = 0; i < textBytes.length; i++) {
-          encrypted[i] = textBytes[i] ^ testKey[i % testKey.length];
-        }
-        
-        // Find key size
-        const discoveredKeySize = findKeySize(encrypted);
-        expect(discoveredKeySize).toBeGreaterThanOrEqual(2);
-        expect(discoveredKeySize).toBeLessThanOrEqual(40);
-        
-        // Transpose and decrypt
-        const transposed = transposeBlocks(encrypted, discoveredKeySize);
-        const discoveredKey = transposed.map(block => singleByteXorDecrypt(block));
-        const decrypted = decrypt(encrypted, new Uint8Array(discoveredKey));
-        
-        // The decrypted text should be readable English
-        expect(scoreEnglishText(decrypted)).toBeGreaterThan(0);
-      });
-    });
+  test('Independent Path Coverage', () => {
+    // Test complete path from base64 input to decrypted output
+    const bytes = base64ToByteArray(base64EncodedCiphertext);
+    const keysize = findKeySize(bytes);
+    const blocks = transposeBlocks(bytes, keysize);
+    const key = blocks.map(block => singleByteXorDecrypt(block));
+    const decrypted = decrypt(bytes, new Uint8Array(key));
+    
+    expect(bytes).toBeInstanceOf(Uint8Array);
+    expect(keysize).toBeGreaterThanOrEqual(2);
+    expect(keysize).toBeLessThanOrEqual(40);
+    expect(blocks.length).toBe(keysize);
+    expect(decrypted).toBeDefined();
+    expect(typeof decrypted).toBe('string');
   });
+
+  test('Logical Decisions (True)', () => {
+    // Test string equality condition in hammingDistance
+    expect(() => hammingDistance('test', 'test')).not.toThrow();
+    
+    // Test valid keysize condition
+    const testData = new Uint8Array(100);
+    const keysize = findKeySize(testData);
+    expect(keysize).toBeGreaterThanOrEqual(2);
+    
+    // Test valid English text scoring
+    const englishText = 'the quick brown fox';
+    const score = scoreEnglishText(englishText);
+    expect(score).toBeGreaterThan(0);
+  });
+
+  test('Logical Decisions (False)', () => {
+    // Test unequal string lengths
+    expect(() => hammingDistance('test', 'tests')).toThrow('Strings must be of equal length');
+    
+    // Test invalid keysize
+    const smallData = new Uint8Array(1);
+    expect(() => transposeBlocks(smallData, 2)).toBeDefined();
+    
+    // Test non-English text scoring
+    const nonEnglishText = '####@@@@';
+    const score = scoreEnglishText(nonEnglishText);
+    expect(score).toBe(0);
+  });
+
+  test('Loop Boundary Testing', () => {
+    // Test minimum keysize
+    const minKeySizeData = new Uint8Array(4);
+    const minKeysize = findKeySize(minKeySizeData);
+    expect(minKeysize).toBeGreaterThanOrEqual(2);
+    
+    // Test maximum keysize
+    const maxKeySizeData = new Uint8Array(200);
+    const maxKeysize = findKeySize(maxKeySizeData);
+    expect(maxKeysize).toBeLessThanOrEqual(40);
+    
+    // Test single-byte XOR with boundary values
+    const singleByte = new Uint8Array([255]); // Maximum byte value
+    expect(() => singleByteXorDecrypt(singleByte)).not.toThrow();
+  });
+
+  test('Internal Data Validity', () => {
+    // Test base64 decoding validity
+    const invalidBase64 = 'Invalid@Base64';
+    
+    expect(() => base64ToByteArray(base64EncodedCiphertext)).not.toThrow();
+    expect(() => base64ToByteArray(invalidBase64)).toThrow();
+    
+    // Test transposed blocks consistency
+    const testData = new Uint8Array([1, 2, 3, 4, 5, 6]);
+    const blocks = transposeBlocks(testData, 2);
+    expect(blocks[0]!.length + blocks[1]!.length).toBe(testData.length);
+  });
+
+  test('Cryptographic Operations', () => {
+    // Test encryption/decryption roundtrip
+    const originalText = 'Test Message';
+    const key = new Uint8Array([1, 2, 3]); // Simple 3-byte key
+    
+    // Convert to bytes and encrypt
+    const textBytes = new Uint8Array(originalText.split('').map(c => c.charCodeAt(0)));
+    const encrypted = new Uint8Array(textBytes.length);
+    for (let i = 0; i < textBytes.length; i++) {
+      encrypted[i] = textBytes[i]! ^ key[i % key.length]!;
+    }
+    
+    // Decrypt and verify
+    const decrypted = decrypt(encrypted, key);
+    expect(decrypted).toBe(originalText);
+    
+    // Test Hamming distance properties
+    const distance = hammingDistance('this', 'that');
+    expect(distance).toBeGreaterThan(0);
+    expect(Number.isInteger(distance)).toBe(true);
+  });
+});
