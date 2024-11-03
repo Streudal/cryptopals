@@ -6,6 +6,17 @@ import Solution from '@/components/sets/challenge-6/Solution';
 import { getItem, saveItem } from '@/lib/utils';
 import Challenge from '@/components/sets/challenge-6/Challenge';
 
+import {
+  hammingDistance,
+  normalizedHammingDistance,
+  findKeySize,
+  transposeBlocks,
+  scoreEnglishText,
+  singleByteXorDecrypt,
+  base64ToByteArray,
+  decrypt
+} from '@/solutions/set-1-challenge-6';
+
 
 //test('Challenge 6: Decrypt AES-128 ECB', () => {
 //   const result = 'wokka wokka!!!';
@@ -24,16 +35,6 @@ import Challenge from '@/components/sets/challenge-6/Challenge';
   //   .map(line => line.trim())
   //   .join('');
 
-  import {
-    hammingDistance,
-    normalizedHammingDistance,
-    findKeySize,
-    transposeBlocks,
-    scoreEnglishText,
-    singleByteXorDecrypt,
-    base64ToByteArray,
-    decrypt
-  } from '@/solutions/set-1-challenge-6';
   
   describe('Cryptography Functions', () => {
     describe('hammingDistance', () => {
