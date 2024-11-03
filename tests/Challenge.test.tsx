@@ -72,6 +72,10 @@ test('Challenge 5: Repeating-key XOR', () => {
 test('Challenge 6: Decrypt AES-128 ECB', () => {
   const result = 'wokka wokka!!!';
   expect(result).toBeDefined();
+    // Read the encrypted file
+  const filePath = path.join(__dirname, '../public/assets/set-1-challenge-data-6.txt');
+  const fileContent = fs.readFileSync(filePath, 'utf-8');
+  const encryptedData = Buffer.from(fileContent, 'base64');
 });
 
 // Challenge 7: Detect AES ECB (file test)
