@@ -1,4 +1,4 @@
-const base64EncodedCiphertext = `
+export const base64EncodedCiphertext = `
 HUIfTQsPAh9PE048GmllH0kcDk4TAQsHThsBFkU2AB4BSWQgVB0dQzNTTmVS
 BgBHVBwNRU0HBAxTEjwMHghJGgkRTxRMIRpHKwAFHUdZEQQJAGQmB1MANxYG
 DBoXQR0BUlQwXwAgEwoFR08SSAhFTmU+Fgk4RQYFCBpGB08fWXh+amI2DB0P
@@ -81,9 +81,17 @@ export function hammingDistance(str1: string, str2: string) {
 
 // Function to compute the normalized Hamming distance
 export function normalizedHammingDistance(ciphertext: Uint8Array, keysize: number) {
-  let chunks = [];
+  // Make sure we have enough data for at least 2 complete chunks
+  if (ciphertext.length < keysize * 2) {
+    return Number.MAX_VALUE;
+  }
 
-  for (let i = 0; i < 4; i++) {
+  let chunks: Uint8Array[] = [];
+  let numFullChunks = Math.floor(ciphertext.length / keysize);
+  numFullChunks = Math.min(numFullChunks, 4); // Take at most 4 chunks
+
+  // Only take complete chunks
+  for (let i = 0; i < numFullChunks; i++) {
     chunks.push(ciphertext.slice(i * keysize, (i + 1) * keysize));
   }
 
@@ -92,14 +100,15 @@ export function normalizedHammingDistance(ciphertext: Uint8Array, keysize: numbe
 
   for (let i = 0; i < chunks.length - 1; i++) {
     for (let j = i + 1; j < chunks.length; j++) {
-      totalDistance += hammingDistance(
-        String.fromCharCode.apply(null, chunks[i]! as unknown as number[]),
-        String.fromCharCode.apply(null, chunks[j]! as unknown as number[])
-      );
-
+      const str1 = String.fromCharCode.apply(null, Array.from(chunks[i]!));
+      const str2 = String.fromCharCode.apply(null, Array.from(chunks[j]!));
+      totalDistance += hammingDistance(str1, str2);
       comparisons++;
     }
   }
+
+  // Avoid division by zero
+  if (comparisons === 0) return Number.MAX_VALUE;
 
   return totalDistance / (comparisons * keysize);
 }
@@ -109,7 +118,9 @@ export function findKeySize(ciphertext: Uint8Array) {
   let smallestDistance = Number.MAX_VALUE;
   let likelyKeySize = 2;
 
-  for (let keysize = 2; keysize <= 40; keysize++) {
+  const maxKeySize = Math.min(40, Math.floor(ciphertext.length / 2));
+
+  for (let keysize = 2; keysize <= maxKeySize; keysize++) {
     const distance = normalizedHammingDistance(ciphertext, keysize);
 
     if (distance < smallestDistance) {
