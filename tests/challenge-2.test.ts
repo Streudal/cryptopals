@@ -131,3 +131,49 @@ describe('Set 1 - Challenge 2: Fixed XOR', () => {
     });
   });
 });
+
+// A comprehensive test suite for the XOR buffer operations.Here's a breakdown of what each test section covers:
+// Independent Path Coverage:
+
+// Tests the main success path with the challenge inputs
+// Tests error handling with unequal buffer lengths
+
+
+// Logical Decisions(True):
+
+// Tests XOR with known patterns(zeros, ones)
+// Tests XOR with identical buffers
+// Tests basic XOR properties
+
+
+// Logical Decisions(False):
+
+// Tests various error conditions
+// Tests invalid buffer lengths
+// Tests edge cases with empty / null buffers
+
+
+// Loop Boundary Testing:
+
+// Tests minimum size buffers(1 byte)
+// Tests empty buffers
+// Tests large buffers to verify loop behavior
+
+
+// Internal Data Validity:
+
+// Tests buffer creation from hex strings
+// Verifies buffer lengths
+// Tests hex string conversion
+
+
+// Cryptographic Operations:
+
+// Tests XOR mathematical properties:
+
+// Commutative property(a XOR b = b XOR a)
+// Identity property(a XOR 0 = a)
+// Self - inverse property(a XOR a = 0)
+
+
+// Tests the main challenge case

@@ -80,7 +80,7 @@ describe('Set 1 - Challenge 1: Convert hex to base64', () => {
   });
 });
 
-
+// A comprehensive test suite that covers all the major testing aspects you requested.Here's a breakdown of what each test section covers:
 // Independent Path Coverage:
 
 // Tests the main success path
