@@ -1,7 +1,8 @@
 import { isValidHex } from '@/lib/utils';
+import { decryptXorCipher } from './set-1-challenge-3';
 
 // @ts-nocheck
-const fileContents = `
+export const fileContents = `
 0e3647e8592d35514a081243582536ed3de6734059001e3f535ce6271032
 334b041de124f73c18011a50e608097ac308ecee501337ec3e100854201d
 40e127f51c10031d0133590b1e490f3514e05a54143d08222c2a4071e351
@@ -331,58 +332,8 @@ e03555453d1e31775f37331823164c341c09e310463438481019fb0b12fa
 32042f46431d2c44607934ed180c1028136a5f2b26092e3b2c4e2930585a
 `;
 
-function decryptXorCipher(hexString: string) {
-  console.log('Hex String: ${hexString}');
-
-  let bestScore = 0;
-  let bestKey = 0;
-  let bestPlaintext = '';
-
-  const bytes = Buffer.from(hexString, 'hex');
-
-  for (let key = 0; key < 256; key++) {
-    const decoded = bytes.map(byte => byte ^ key);
-    const text = Buffer.from(decoded).toString('ascii');
-    const score = scoreText(text);
-
-    console.log('Key:, ${key}, Text: ${text}, Score: ${score}');
-
-    if (score > bestScore) {
-      bestScore = score;
-      bestKey = key;
-      bestPlaintext = text;
-    }
-  }
-
-  console.log('Best Key:, ${bestKey}, Best Plaintext: ${bestPlaintext}, Best Score: ${bestScore}');
-
-  return {
-    key: bestKey,
-    plaintext: bestPlaintext,
-    score: bestScore
-  };
-}
-
-function scoreText(text: string): number {
-  console.log('Input Text: ${text}');
-
-  const commonLetters = 'ETAOIN SHRDLU';
-  const upperText = text.toUpperCase();
-
-  return upperText.split('').reduce((score, char) => {
-    if (commonLetters.includes(char)) {
-      score += 2;
-    } else if (/[A-Z\s.,]/.test(char)) {
-      score += 1;
-    }
-    return score;
-  }, 0);
-  console.log('Score: ${score}');
-  return score;
-}
-
-export function findEncryptedString(fileContent: string) {
-  const lines = fileContent.split("\n");
+export function findEncryptedString(hexFileContents: string) {
+  const lines = hexFileContents.split("\n").filter(Boolean).map(l => l.trim());
   let bestScore = -1;
   let bestLine = '';
   let bestKey = 0;
