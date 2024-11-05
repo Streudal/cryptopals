@@ -3,7 +3,7 @@ import { describe, expect, test } from 'vitest';
 
 describe('Set 1 - Challenge 1: Convert hex to base64', () => {
   test('Independent Path Coverage', () => {
-    // Test the complete happy path
+    // Test the main challenge case
     const result = hexToBase64(hexStringInput);
     expect(result).toBe(base64StringOutput);
 
