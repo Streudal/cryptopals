@@ -1,122 +1,99 @@
-import { decryptAES128ECB, decryptionKey } from '@/solutions/set-1-challenge-7';
+import { decryptAES128ECB, decryptionKey, encryptedBase64Content } from '@/solutions/set-1-challenge-7';
+import * as crypto from 'crypto';
 import { describe, expect, test } from 'vitest';
 
-describe('Set 1 - Challenge 7: AES in ECB mode', () => {
-  test('Independent Path Coverage', () => {
-    // Test basic encryption/decryption
-    const base64Sample = Buffer.from('Hello, AES-128-ECB!').toString('base64');
-    const decrypted = decryptAES128ECB(base64Sample, 'YELLOW SUBMARINE');
-    expect(decrypted).toBeTruthy();
+// Helper function to encrypt test data
+function encryptAES128ECB(text: string, key: string): string {
+  const cipher = crypto.createCipheriv('aes-128-ecb', Buffer.from(key, 'utf-8'), null);
+  let encrypted = cipher.update(text, 'utf8', 'base64');
+  encrypted += cipher.final('base64');
+  return encrypted;
+}
 
-    // Test with empty input
-    expect(() => decryptAES128ECB('', decryptionKey)).not.toThrow();
+describe('Set 1 - Challenge 7: AES-128-ECB Decryption', () => {
+  test('Independent Path Coverage', () => {
+    // Test successful decryption path
+    const result = decryptAES128ECB(encryptedBase64Content, decryptionKey);
+    expect(result).toContain("I'm back and I'm ringin' the bell");
+    expect(result).toContain("Play that funky music white boy");
+
+    // Test empty input path
+    expect(() => decryptAES128ECB('', decryptionKey)).toThrow();
   });
 
   test('Logical Decisions (True)', () => {
-    // Test with valid key and base64 input
-    const validBase64 = 'SGVsbG8sIFdvcmxkIQ=='; // "Hello, World!"
-    const result = decryptAES128ECB(validBase64, decryptionKey);
-    expect(result).toBeTruthy();
+    // Test with valid encrypted content
+    const testMessage = 'Hello World';
+    const encryptedContent = encryptAES128ECB(testMessage, decryptionKey);
+    const decrypted = decryptAES128ECB(encryptedContent, decryptionKey);
+    expect(decrypted).toBe(testMessage);
 
-    // Test with padded input (should handle automatically)
-    const paddedText = Buffer.from('Test Padding    ').toString('base64');
-    expect(() => decryptAES128ECB(paddedText, decryptionKey)).not.toThrow();
-
-    // Test with multi-block input
-    const multiBlock = Buffer.from('This is a longer text that spans multiple AES blocks').toString('base64');
-    expect(() => decryptAES128ECB(multiBlock, decryptionKey)).not.toThrow();
+    // Test with correct key length
+    expect(() => {
+      decryptAES128ECB(encryptedBase64Content, decryptionKey);
+    }).not.toThrow();
   });
 
   test('Logical Decisions (False)', () => {
-    // Test with invalid key length
-    expect(() => decryptAES128ECB('SGVsbG8=', 'SHORT_KEY')).toThrow();
+    // Test with invalid Base64 input
+    expect(() => {
+      decryptAES128ECB('!@#$%^&*()', decryptionKey);
+    }).toThrow();
 
-    // Test with invalid base64 input
-    expect(() => decryptAES128ECB('not-base64!@#$', decryptionKey)).toThrow();
-
-    // Test with null values
-    expect(() => decryptAES128ECB(null as any, decryptionKey)).toThrow();
+    // Test with incorrect key length
+    expect(() => {
+      decryptAES128ECB(encryptedBase64Content, 'SHORT_KEY');
+    }).toThrow();
   });
 
   test('Loop Boundary Testing', () => {
-    // Test with single block size (16 bytes)
-    const singleBlock = Buffer.from('Exactly16BytesHere').toString('base64');
-    expect(() => decryptAES128ECB(singleBlock, decryptionKey)).not.toThrow();
+    // Test with minimum valid input (16 bytes / 1 block)
+    const smallMessage = 'Sixteen_byteMsg!';  // Exactly 16 bytes
+    const oneBlockEncrypted = encryptAES128ECB(smallMessage, decryptionKey);
+    const decryptedSmall = decryptAES128ECB(oneBlockEncrypted, decryptionKey);
+    expect(decryptedSmall).toBe(smallMessage);
 
-    // Test with input just under block size
-    const underBlock = Buffer.from('15BytesOfData!').toString('base64');
-    expect(() => decryptAES128ECB(underBlock, decryptionKey)).not.toThrow();
-
-    // Test with input just over block size
-    const overBlock = Buffer.from('This is 17 bytes!').toString('base64');
-    expect(() => decryptAES128ECB(overBlock, decryptionKey)).not.toThrow();
+    // Test with large input (multiple blocks)
+    const largeMessage = 'A'.repeat(64);  // 4 blocks
+    const multiBlockEncrypted = encryptAES128ECB(largeMessage, decryptionKey);
+    const decryptedLarge = decryptAES128ECB(multiBlockEncrypted, decryptionKey);
+    expect(decryptedLarge).toBe(largeMessage);
   });
 
   test('Internal Data Validity', () => {
-    // Test key length is exactly 16 bytes
-    expect(Buffer.from(decryptionKey, 'utf-8').length).toBe(16);
+    // Test key buffer length
+    const keyBuffer = Buffer.from(decryptionKey, 'utf-8');
+    expect(keyBuffer.length).toBe(16);
 
-    // Test decryption preserves original text
-    const originalText = 'Test Message';
-    const encrypted = Buffer.from(originalText).toString('base64');
-    const decrypted = decryptAES128ECB(encrypted, decryptionKey);
-    expect(decrypted).toContain(originalText);
+    // Test that input is properly Base64 encoded
+    expect(() => {
+      Buffer.from(encryptedBase64Content, 'base64');
+    }).not.toThrow();
 
-    // Test output is valid UTF-8
-    const result = decryptAES128ECB(
-      Buffer.from('Hello UTF8 ✓').toString('base64'),
-      decryptionKey
-    );
-    expect(() => Buffer.from(result, 'utf-8')).not.toThrow();
+    // Test that decrypted output is valid UTF-8
+    const result = decryptAES128ECB(encryptedBase64Content, decryptionKey);
+    expect(() => {
+      Buffer.from(result, 'utf-8');
+    }).not.toThrow();
   });
 
   test('Cryptographic Operations', () => {
-    const testCases = [
-      {
-        // Empty string case
-        input: Buffer.from('').toString('base64'),
-        shouldThrow: false
-      },
-      {
-        // Single block case
-        input: Buffer.from('AES-128-ECB Test.').toString('base64'),
-        shouldThrow: false
-      },
-      {
-        // Multi-block case
-        input: Buffer.from('This is a multi-block test case for AES-128-ECB encryption.').toString('base64'),
-        shouldThrow: false
-      },
-      {
-        // Test with the actual challenge data sample
-        input: 'CRIwqt4+szDbqkNY+I0qbDe3LQz0wiw0SuxBQtAM5TDdMbjCMD/venUDW9BL',
-        shouldThrow: false
-      },
-      {
-        // Test padding boundary
-        input: Buffer.from('Test padding boundary case!').toString('base64'),
-        shouldThrow: false
-      }
-    ];
+    // Test that the same input always produces the same output
+    const result1 = decryptAES128ECB(encryptedBase64Content, decryptionKey);
+    const result2 = decryptAES128ECB(encryptedBase64Content, decryptionKey);
+    expect(result1).toBe(result2);
 
-    testCases.forEach(({ input, shouldThrow }) => {
-      if (shouldThrow) {
-        expect(() => decryptAES128ECB(input, decryptionKey)).toThrow();
-      } else {
-        expect(() => decryptAES128ECB(input, decryptionKey)).not.toThrow();
-      }
-    });
+    // Test that different keys produce different outputs
+    const differentKey = 'PURPLE SUBMARINE';
+    expect(() => {
+      decryptAES128ECB(encryptedBase64Content, differentKey);
+    }).toThrow();
 
-    // Test with actual challenge data sample
-    const sampleInput = 'CRIwqt4+szDbqkNY+I0qbDe3LQz0wiw0SuxBQtAM5TDdMbjCMD/venUDW9BL';
-    const decrypted = decryptAES128ECB(sampleInput, decryptionKey);
-    expect(decrypted).toBeTruthy();
-    expect(typeof decrypted).toBe('string');
-
-    // Verify cryptographic properties
-    const key = 'YELLOW SUBMARINE';
-    expect(key).toHaveLength(16); // AES-128 requires 16-byte key
-    expect(Buffer.from(key, 'utf-8').length).toBe(16); // Verify byte length
+    // Verify ECB mode characteristics (same input blocks produce same output blocks)
+    const testBlock = 'A'.repeat(32);  // Two identical blocks
+    const encrypted = encryptAES128ECB(testBlock, decryptionKey);
+    const decrypted = decryptAES128ECB(encrypted, decryptionKey);
+    expect(decrypted.slice(0, 16)).toBe(decrypted.slice(16, 32));
   });
 });
 
