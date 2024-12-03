@@ -2,6 +2,7 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { challengeSets } from '@/lib/constants';
 import { getItem } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 
 type ChallengeListPageProps = {
   params: {
@@ -10,8 +11,24 @@ type ChallengeListPageProps = {
 }
 
 export default function Scores({ params }: ChallengeListPageProps) {
-  const points = challengeSets.flatMap((set) => set.challenges.flatMap((challenge) => JSON.parse(getItem(`Set ${set.id} -- Challenge ${challenge.id}`) as any)?.value ?? 0));
-  const total = points.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  const [values, setValues] = useState({
+    points: 0,
+    total: 0
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedPoints = challengeSets.flatMap((set) => set.challenges.flatMap((challenge) => JSON.parse(getItem(`Set ${set.id} -- Challenge ${challenge.id}`) as any)?.value ?? 0));
+      const storedTotal = storedPoints.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+      if (storedPoints) {
+        setValues({
+          points: storedPoints as unknown as number,
+          total: storedTotal
+        });
+      }
+    }
+  }, []);
 
   return (
     <div className="flex flex-col gap-10 pt-5">
@@ -22,7 +39,7 @@ export default function Scores({ params }: ChallengeListPageProps) {
         <h3>Overall Score</h3>
         <div className='dot-fill'>
           <div className='flex gap-1'>
-            <span>{total}</span>
+            <span>{values.total}</span>
             <span>/</span>
             <span>8</span>
           </div>
@@ -41,7 +58,7 @@ export default function Scores({ params }: ChallengeListPageProps) {
                       <span>{challenge.subTitle}</span>
                     </p>
                     <p className="dot-fill gap-1">
-                      <span>{JSON.parse(getItem(`Set ${set.id} -- Challenge ${challenge.id}`) as any)?.value ?? 0}</span>
+                      <span>{values.points}</span>
                       <span>/</span>
                       <span>{challenge.points}</span>
                     </p>
